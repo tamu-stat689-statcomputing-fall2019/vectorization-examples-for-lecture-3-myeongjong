@@ -2,18 +2,32 @@
 
 square_for <- function(x){
   # [ToDo] Use the for loop
-  
+  y = x
+  for (i in 1:length(x)){
+    y[i] = x[i]^2
+  }
   return(y)
 }
 
 square_sapply <- function(x){
   # [ToDo] Use the sapply function
   
+  y <- sapply(x, function(t) t^2)
   return(y)
 }
 
 square_vec <- function(x){
   # [ToDo] Use power function in vector form
+  
+  y = x^2
+  
+  return(y)
+}
+
+square_vec2 <- function(x){
+  # [ToDo] Use power function in vector form
+  
+  y = x * x
   
   return(y)
 }
