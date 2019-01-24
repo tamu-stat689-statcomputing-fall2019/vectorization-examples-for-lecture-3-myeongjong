@@ -14,6 +14,22 @@ require(mnormt) # for multivariate normal data generation
 
 classify_for <- function(beta, xtrain, ytrain, xtest, ytest){
   # [ToDo] Code discriminant analysis classifier using for loop
+  # Calculate sample means based on training data
+  xbar1 <- colMeans(xtrain[ytrain == 1, ])
+  xbar2 <- colMeans(xtrain[ytrain == 2, ])
+  # Calculate class assignments for xtest in a for loop
+  ntest <- nrow(xtest)
+  ypred <- rep(1, ntest)
+  for (i in 1:ntest){
+    # Apply h(x) rule to the ith row of xtest
+    h1 = as.numeric(crossprod(beta, xtest[i, ] - xbar1)^2)
+    h2 = as.numeric(crossprod(beta, xtest[i, ] - xbar2)^2)
+    if (h1 > h2){
+      ypred[i] <- 2
+    }
+  }
+  # Calculate % error using ytest
+  error <- (sum(ytest != ypred) / ntest) * 100
   
   return(list(ypred = ypred, error = error))
 }
@@ -59,6 +75,8 @@ W <- ((n1 - 1) * cov(xtrain[ytrain == 1, ]) + (n2 - 1) * cov(xtrain[ytrain == 2,
 beta <- solve(W, xbar1 - xbar2)
 
 # [ToDo] Calculate test assignments based on each function
+
+classify_for(beta, xtrain, ytrain, xtest, ytest)
 
 # [ToDo] Verify the assignments agree with each other
 
