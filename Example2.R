@@ -99,5 +99,12 @@ out1 = classify_for(beta, xtrain, ytrain, xtest, ytest)
 out2 = classify_vec(beta, xtrain, ytrain, xtest, ytest)
 
 # [ToDo] Verify the assignments agree with each other
+sum(out1$ypred != out2$ypred)
 
 # [ToDo] Use microbenchmark package to compare the timing
+
+library(microbenchmark)
+microbenchmark(
+  classify_for(beta, xtrain, ytrain, xtest, ytest),
+  classify_vec(beta, xtrain, ytrain, xtest, ytest)
+)
