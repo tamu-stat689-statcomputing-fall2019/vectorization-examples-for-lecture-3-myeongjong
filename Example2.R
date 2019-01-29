@@ -36,7 +36,25 @@ classify_for <- function(beta, xtrain, ytrain, xtest, ytest){
 
 classify_vec <- function(beta, xtrain, ytrain, xtest, ytest){
   # [ToDo] Try to create vectorized version of classifyV_for
+  # Calculate sample means based on training data
+  xbar1 <- colMeans(xtrain[ytrain == 1, ])
+  xbar2 <- colMeans(xtrain[ytrain == 2, ])
+  # Calculate inner product with beta
+  m1b = crossprod(xbar1, beta)
+  m2b = crossprod(xbar2, beta)
+  xtestb = xtest %*% beta # n-dimensional vector
   
+  # Calculate h1 and h2 without for loop
+  h1 = xtestb^2 - 2 * xtestb * m1b + m1b^2
+  h2 = xtestb^2 - 2 * xtestb * m2b + m2b^2
+  
+  # Assignment and errors
+  ntest <- nrow(xtest)
+  ytest <- rep(1, ntest)
+  ytest[h1 > h2] <- 2
+  
+  # Calculate % error using ytest
+  error <- (sum(ytest != ypred) / ntest) * 100
   return(list(ypred = ypred, error = error))
 }
 
