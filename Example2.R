@@ -40,8 +40,8 @@ classify_vec <- function(beta, xtrain, ytrain, xtest, ytest){
   xbar1 <- colMeans(xtrain[ytrain == 1, ])
   xbar2 <- colMeans(xtrain[ytrain == 2, ])
   # Calculate inner product with beta
-  m1b = crossprod(xbar1, beta)
-  m2b = crossprod(xbar2, beta)
+  m1b = as.numeric(crossprod(xbar1, beta))
+  m2b = as.numeric(crossprod(xbar2, beta))
   xtestb = xtest %*% beta # n-dimensional vector
   
   # Calculate h1 and h2 without for loop
@@ -50,8 +50,8 @@ classify_vec <- function(beta, xtrain, ytrain, xtest, ytest){
   
   # Assignment and errors
   ntest <- nrow(xtest)
-  ytest <- rep(1, ntest)
-  ytest[h1 > h2] <- 2
+  ypred <- rep(1, ntest)
+  ypred[h1 > h2] <- 2
   
   # Calculate % error using ytest
   error <- (sum(ytest != ypred) / ntest) * 100
@@ -94,7 +94,9 @@ beta <- solve(W, xbar1 - xbar2)
 
 # [ToDo] Calculate test assignments based on each function
 
-classify_for(beta, xtrain, ytrain, xtest, ytest)
+out1 = classify_for(beta, xtrain, ytrain, xtest, ytest)
+
+out2 = classify_vec(beta, xtrain, ytrain, xtest, ytest)
 
 # [ToDo] Verify the assignments agree with each other
 
