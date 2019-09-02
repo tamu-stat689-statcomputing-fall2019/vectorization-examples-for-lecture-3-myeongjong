@@ -14,47 +14,28 @@ require(mnormt) # for multivariate normal data generation
 
 classify_for <- function(beta, xtrain, ytrain, xtest, ytest){
   # [ToDo] Code discriminant analysis classifier using for loop
-  # Calculate sample means based on training data
-  xbar1 <- colMeans(xtrain[ytrain == 1, ])
-  xbar2 <- colMeans(xtrain[ytrain == 2, ])
-  # Calculate class assignments for xtest in a for loop
-  ntest <- nrow(xtest)
-  ypred <- rep(1, ntest)
-  for (i in 1:ntest){
-    # Apply h(x) rule to the ith row of xtest
-    h1 = as.numeric(crossprod(beta, xtest[i, ] - xbar1)^2)
-    h2 = as.numeric(crossprod(beta, xtest[i, ] - xbar2)^2)
-    if (h1 > h2){
-      ypred[i] <- 2
-    }
-  }
-  # Calculate % error using ytest
-  error <- (sum(ytest != ypred) / ntest) * 100
   
+  # Calculate sample means based on training data
+ 
+  
+  # Calculate class assignments for xtest in a for loop
+  
+  # Calculate % error using ytest
+
+  # Return predictions and error
   return(list(ypred = ypred, error = error))
 }
 
 classify_vec <- function(beta, xtrain, ytrain, xtest, ytest){
-  # [ToDo] Try to create vectorized version of classifyV_for
+  # [ToDo] Try to create vectorized version of classify_for
+  
   # Calculate sample means based on training data
-  xbar1 <- colMeans(xtrain[ytrain == 1, ])
-  xbar2 <- colMeans(xtrain[ytrain == 2, ])
-  # Calculate inner product with beta
-  m1b = as.numeric(crossprod(xbar1, beta))
-  m2b = as.numeric(crossprod(xbar2, beta))
-  xtestb = xtest %*% beta # n-dimensional vector
   
-  # Calculate h1 and h2 without for loop
-  h1 = xtestb^2 - 2 * xtestb * m1b + m1b^2
-  h2 = xtestb^2 - 2 * xtestb * m2b + m2b^2
-  
-  # Assignment and errors
-  ntest <- nrow(xtest)
-  ypred <- rep(1, ntest)
-  ypred[h1 > h2] <- 2
+  # Calculate class assignments for xtest using matrix and vector algebra
   
   # Calculate % error using ytest
-  error <- (sum(ytest != ypred) / ntest) * 100
+ 
+  # Return predictions and error
   return(list(ypred = ypred, error = error))
 }
 
@@ -92,19 +73,14 @@ W <- ((n1 - 1) * cov(xtrain[ytrain == 1, ]) + (n2 - 1) * cov(xtrain[ytrain == 2,
 # Calculate the discriminant vector
 beta <- solve(W, xbar1 - xbar2)
 
-# [ToDo] Calculate test assignments based on each function
+# Calculate test assignments based on each function
 
 out1 = classify_for(beta, xtrain, ytrain, xtest, ytest)
 
 out2 = classify_vec(beta, xtrain, ytrain, xtest, ytest)
 
 # [ToDo] Verify the assignments agree with each other
-sum(out1$ypred != out2$ypred)
 
 # [ToDo] Use microbenchmark package to compare the timing
 
 library(microbenchmark)
-microbenchmark(
-  classify_for(beta, xtrain, ytrain, xtest, ytest),
-  classify_vec(beta, xtrain, ytrain, xtest, ytest)
-)
