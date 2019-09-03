@@ -20,7 +20,7 @@ classify_for <- function(beta, xtrain, ytrain, xtest, ytest){
   x2_bar <- colMeans(xtrain[ytrain == 2, ])
   
   # Calculate class assignments for xtest in a for loop
-  ypred     <- c()
+  ypred     <- rep(-9999, length(ytest))
   disc_vec  <- function(x, m, beta) as.numeric(crossprod(x - m, beta))
   
   for(i in 1:length(ytest)) ypred[i] <- ifelse(disc_vec(xtest[i, ], x1_bar, beta) < disc_vec(xtest[i, ], x2_bar, beta) , 1, 2)
