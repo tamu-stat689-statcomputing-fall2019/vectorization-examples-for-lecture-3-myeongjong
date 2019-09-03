@@ -21,6 +21,11 @@ square_vec2 <- function(x){
   x*x
 }
 
+square_2star <- function(x){
+  # [ToDo] Use multiplication(*) function in vector form
+  x**2
+}
+
 # [ToDo] Create a vector x of size 100,000 of normal variables
 x <- rnorm(100000)
 
@@ -32,12 +37,14 @@ z1 <- square_for(x)
 z2 <- square_sapply(x)
 z3 <- square_vec(x)
 z4 <- square_vec2(x)
+z5 <- square_2star(x)
 
 identical(z1, z2)
 identical(z1, z3)
 identical(z1, z4)
+identical(z1, z5)
 
 # [ToDo] Use microbenchmark package to compare three functions in terms of speed
 library(microbenchmark)
 
-microbenchmark(square_for(x), square_sapply(x), square_vec(x), square_vec2(x))
+microbenchmark(square_for(x), square_sapply(x), square_vec(x), square_vec2(x), square_2star(x))
