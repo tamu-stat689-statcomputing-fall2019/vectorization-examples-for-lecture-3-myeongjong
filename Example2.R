@@ -40,10 +40,10 @@ classify_vec <- function(beta, xtrain, ytrain, xtest, ytest){
   x2_bar <- colMeans(xtrain[ytrain == 2, ])
   
   # Calculate class assignments for xtest using matrix and vector algebra
-  
+  ypred <- ifelse(as.numeric(crossprod(t(xtest) - x1_bar, beta)) < as.numeric(crossprod(t(xtest) - x2_bar, beta)), 1, 2)
   
   # Calculate % error using ytest
-  error <- sum(ypred != ytest) / length(ytest)
+  error <- sum(ypred != ytest) / length(ytest) * 100
  
   # Return predictions and error
   return(list(ypred = ypred, error = error))
